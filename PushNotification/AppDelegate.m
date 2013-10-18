@@ -13,6 +13,14 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    /// Push Notification
+    NSLog(@"Registro Push");
+    [[UIApplication sharedApplication] registerForRemoteNotificationTypes:
+     (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert)];
+
+    
+    
+    
     return YES;
 }
 							
@@ -41,6 +49,25 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+#pragma mark - PushMetodos
+- (void)application:(UIApplication*)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData*)deviceToken
+{
+    NSLog(@"didRegisterForRemoteNotificationsWithDeviceToken");
+    NSString *tokenStr = [deviceToken description];
+    NSString *pushToken = [[[tokenStr
+                             stringByReplacingOccurrencesOfString:@"<" withString:@""]
+                            stringByReplacingOccurrencesOfString:@">" withString:@""]
+                           stringByReplacingOccurrencesOfString:@" " withString:@""];
+    
+    NSLog(@"Token AppDellegate: %@", pushToken);
+    
+}
+
+- (void)application:(UIApplication*)application didFailToRegisterForRemoteNotificationsWithError:(NSError*)error
+{
+	NSLog(@"Failed to get token, error: %@", error);
 }
 
 @end
